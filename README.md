@@ -1,4 +1,4 @@
-# vue-3-ead
+# front EAD Platform
 
 ## Project setup
 ```

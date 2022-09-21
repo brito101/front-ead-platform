@@ -28,12 +28,12 @@
             </span>
             <span class="description">
               <p>
-                Os melhores e mais completos cursos de Laravel do Brasil, cursos
-                com projetos reais. Do zero ao profissional.
+                Os melhores e mais completos cursos da plataforma Estágio
+                Premium.
               </p>
             </span>
             <span class="copyright fontSmall">
-              Todos os Direitos reservados - <b>Especializati</b>
+              Todos os Direitos reservados - <b>Estágio Premium</b>
             </span>
           </div>
         </div>
@@ -109,6 +109,9 @@
 import { ref } from "@vue/reactivity"
 import router from "@/router"
 import { useStore } from "vuex"
+
+import { notify } from "@kyvg/vue3-notification"
+
 export default {
   name: "AuthView",
   setup() {
@@ -125,8 +128,19 @@ export default {
           password: password.value,
           device_name: "vue3_web",
         })
-        .then(() => router.push({name: 'campus.home'}))
-        .catch((error) => console.log(error))
+        .then(() => router.push({ name: "campus.home" }))
+        .catch((error) => {
+          let msgError = "Falha na requisição"
+
+          if (error.status === 422) msgError = "Dados Inválidos"
+          if (error.status === 404) msgError = "Usuário não Encontrado"
+
+          notify({
+            title: "Falha ao autenticar",
+            text: msgError,
+            type: "warn",
+          })
+        })
         .finally(() => (loading.value = false))
     }
 

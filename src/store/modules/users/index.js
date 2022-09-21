@@ -1,4 +1,5 @@
 import AuthService from "@/services/auth.service"
+import ResetPasswordService from "@/services/password.reset.service"
 
 export default {
   state: {
@@ -27,5 +28,9 @@ export default {
     auth({ dispatch }, params) {
       return AuthService.auth(params).then(() => dispatch("getMe"))
     },
+
+    forgetPassword (_, params) {
+      return ResetPasswordService.forgetPassword(params)
+  },
   },
 }

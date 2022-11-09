@@ -2,7 +2,14 @@
   <div class="training">
     <div class="card bg-laravel">
       <span class="icon">
-        <img src="images/icons/laravel.svg" alt="" />
+        <img
+          :src="[
+            course.image
+              ? course.image
+              : require('@/assets/images/icons/laravel.svg'),
+          ]"
+          alt=""
+        />
       </span>
       <span class="title">{{ lesson.name }}</span>
       <router-link :to="{ name: 'campus.home' }" class="btn laravel">
@@ -35,9 +42,11 @@ export default {
   setup() {
     const store = useStore()
     const lesson = computed(() => store.state.courses.lessonPlayer)
+    const course = computed(() => store.state.courses)
 
     return {
       lesson,
+      course
     }
   },
 }

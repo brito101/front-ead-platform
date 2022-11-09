@@ -80,24 +80,46 @@
       </div>
     </div>
   </div>
+
+  <modal-support
+    :show-modal="modal.showModal"
+    :support-reply="modal.supportReply"
+    @closeModal="modal.showModal = false"
+  >
+  </modal-support>
 </template>
 
 <script>
 import { computed, ref } from "vue"
 import { useStore } from "vuex"
 
+import ModalSupport from "./SupportModal.vue"
+
 export default {
   name: "SupportsView",
   setup() {
     const store = useStore()
+
     const showSupport = ref("0")
 
     const supports = computed(() => store.state.supports.supports)
 
+    const modal = ref({
+      showModal: false,
+      supportReply: "",
+    })
+    const openModal = (supportId) =>
+      (modal.value = { showModal: true, supportReply: supportId })
+
     return {
       supports,
       showSupport,
+      modal,
+      openModal,
     }
+  },
+  components: {
+    ModalSupport,
   },
 }
 </script>

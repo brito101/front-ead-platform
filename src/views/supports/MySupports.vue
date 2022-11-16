@@ -18,10 +18,30 @@
             </div>
             <div class="modules">
               <ul class="classes">
-                <li>Todos</li>
-                <li>Aguardando Minha Resposta</li>
-                <li>Aguardando Professor</li>
-                <li>Finalizados</li>
+                <li
+                  :class="{ active: status === '' }"
+                  @click="getMySupportsWithStatus('')"
+                >
+                  Todos
+                </li>
+                <li
+                  :class="{ active: status === 'A' }"
+                  @click="getMySupportsWithStatus('A')"
+                >
+                  Aguardando Minha Resposta
+                </li>
+                <li
+                  :class="{ active: status === 'P' }"
+                  @click="getMySupportsWithStatus('P')"
+                >
+                  Aguardando Professor
+                </li>
+                <li
+                  :class="{ active: status === 'C' }"
+                  @click="getMySupportsWithStatus('C')"
+                >
+                  Finalizados
+                </li>
               </ul>
             </div>
           </div>
@@ -41,8 +61,29 @@
 
 <script>
 import SupportsView from "@/components/Supports.vue"
+import { onMounted, ref } from "vue"
+import { useStore } from "vuex"
 export default {
   name: "MySupports",
+
+  setup() {
+    const store = useStore()
+    const status = ref("")
+
+    onMounted(() => store.dispatch("getMySupports", { status: status.value }))
+
+    const getMySupportsWithStatus = (newStatus) => {
+      status.value = newStatus
+
+      store.dispatch("getMySupports", { status: newStatus })
+    }
+
+    return {
+      getMySupportsWithStatus,
+      status,
+    }
+  },
+
   components: {
     SupportsView,
   },

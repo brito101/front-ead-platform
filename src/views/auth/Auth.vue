@@ -68,13 +68,13 @@
               <div class="groupForm">
                 <i class="far fa-key"></i>
                 <input
-                  type="password"
+                  :type="typePassword"
                   name="password"
                   placeholder="Senha"
-                  required
                   v-model="password"
+                  required
                 />
-                <i class="far fa-eye buttom"></i>
+                <i class="far fa-eye buttom" @click="toggleShowPassword"></i>
               </div>
               <button
                 type="submit"
@@ -111,6 +111,7 @@ import router from "@/router"
 import { useStore } from "vuex"
 
 import { notify } from "@kyvg/vue3-notification"
+import { computed, watch } from "vue"
 
 export default {
   name: "AuthView",
@@ -119,6 +120,22 @@ export default {
     const email = ref("")
     const password = ref("")
     const loading = ref(false)
+
+    const loadingStore = computed(() => store.state.loading)
+
+    watch(
+      () => store.state.users.loggedIn,
+      (loggedIn) => {
+        if (loggedIn) {
+          router.push({ name: "campus.home" })
+        }
+      }
+    )
+
+    const typePassword = ref("password")
+    const toggleShowPassword = () =>
+      (typePassword.value =
+        typePassword.value === "password" ? "text" : "password")
 
     const auth = () => {
       loading.value = true
@@ -144,7 +161,15 @@ export default {
         .finally(() => (loading.value = false))
     }
 
-    return { auth, email, password, loading }
+    return {
+      auth,
+      email,
+      password,
+      loading,
+      typePassword,
+      toggleShowPassword,
+      loadingStore,
+    }
   },
 }
 </script>

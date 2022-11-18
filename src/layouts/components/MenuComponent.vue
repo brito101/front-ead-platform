@@ -1,5 +1,8 @@
 <template>
-  <div class="animate__animated animate__fadeIn">
+  <div
+    class="animate__animated animate__fadeIn"
+    style="position: absolute; z-index: 99"
+  >
     <transition name="fade">
       <ul id="mainMenu">
         <li class="animate__animated animate__headShake">

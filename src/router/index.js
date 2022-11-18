@@ -5,6 +5,8 @@ import ModulesAndLessons from "../views/modules/ModulesAndLessons.vue"
 import AuthView from "../views/auth/Auth.vue"
 import ForgetPassword from "../views/auth/ForgetPassword.vue"
 import ResetPassword from "../views/auth/ResetPassword.vue"
+import store from "@/store"
+import { TOKEN_NAME } from "@/configs"
 
 const routes = [
   {
@@ -49,6 +51,22 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+})
+
+router.beforeEach(async (to, _, next) => {
+  const loggedIn = store.state.users.loggedIn
+  if (to.name != "reset.password" && !loggedIn) {
+    const token = await localStorage.getItem(TOKEN_NAME)
+    if (!token && to.name != "auth" && to.name != "forget.password") {
+      return router.push({ name: "auth" })
+    }
+
+    await store.dispatch("getMe").catch(() => {
+      if (to.name != "auth") return router.push({ name: "auth" })
+    })
+  }
+
+  next()
 })
 
 export default router

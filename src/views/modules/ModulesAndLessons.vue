@@ -31,12 +31,17 @@ import { computed } from "vue"
 import ModulesView from "./components/Modules.vue"
 import PlayerView from "./components/Player.vue"
 import SupportsLesson from "./components/Supports.vue"
+import router from "@/router"
 
 export default {
   name: "ModulesAndLessons",
   setup() {
     const store = useStore()
     const course = computed(() => store.state.courses.courseSelected)
+
+    if (course.value.id === "") {
+      router.push({ name: "campus.home" })
+    }
 
     return {
       course,

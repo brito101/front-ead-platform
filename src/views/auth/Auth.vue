@@ -79,9 +79,14 @@
               <button
                 type="submit"
                 @click.prevent="auth"
-                :class="['btn', 'primary', loading ? 'loading' : '']"
+                :class="[
+                  'btn',
+                  'primary',
+                  loading || loadingStore ? 'disabled' : '',
+                ]"
               >
                 <span v-if="loading">Enviando...</span>
+                <span v-else-if="loadingStore">Validando Acesso...</span>
                 <span v-else>Login</span>
               </button>
             </form>
